@@ -13,4 +13,10 @@ Teacherrouter.post("/login", (req, res) => {
     let controller = require('../../controller/teachercontoller');
     controller.login(params, res);
 });
+Teacherrouter.post("/createtest", (req, res) => {
+    let params = req.body;
+    console.log(params);
+    let controller = require(`../../controller/teachercontoller`);
+    controller.createtest(params, res)
+})
 module.exports = Teacherrouter;

@@ -45,4 +45,16 @@ TeacherController.login = (params, res) => {
         }
     );
 }
+TeacherController.createtest = (params, res) => {
+    let { teacher, subject, Question, Answer, Option } = params;
+    client.query(`insert into test(creator,subject,questions,answers,options) values($1,$2,$3,$4,$5)`, [teacher, subject, Question, Answer, Option],
+        (err, results) => {
+            if (err) console.log(err);
+            else {
+                if (results.rowCount !== 0) {
+                    res.send({ success: true });
+                }
+            }
+        })
+}
 module.exports = TeacherController;

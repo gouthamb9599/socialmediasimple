@@ -1,5 +1,6 @@
 const client = require('../config/database')
 const jwt = require("jsonwebtoken");
+const { param } = require('../routes/Teacher/teacher');
 // var jwtDecode = require('jwt-decode');
 const StudentController = () => { };
 StudentController.signup = (params, res) => {
@@ -44,5 +45,18 @@ StudentController.login = (params, res) => {
             }
         }
     );
+}
+StudentController.gettest = (params, res) => {
+    client.query(`select * from test where subject=$1`, [params],
+        (err, results) => {
+            if (err) console.log(err);
+            else {
+                console.log(results)
+                if (results.rowCount !== 0) {
+                    res.send({ success: true, data: results.rows[0] })
+                }
+            }
+
+        })
 }
 module.exports = StudentController;
