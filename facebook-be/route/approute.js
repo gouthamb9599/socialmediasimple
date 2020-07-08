@@ -79,5 +79,18 @@ const route = app => {
                 }
             })
     })
+    app.post('/addpost', (req, res) => {
+        const data = req.body;
+        console.log(data);
+        client.query(`insert into posts(content,account_id,description) values($1,$2,$3)`, [data.content, data.id, data.description],
+            (err, results) => {
+                if (err) console.log(err);
+                else {
+                    if (res.rowCount !== 0) {
+                        res.send({ success: true })
+                    }
+                }
+            })
+    })
 }
 module.exports = route;

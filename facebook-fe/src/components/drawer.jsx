@@ -25,6 +25,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Bio from '../components/bio';
+import Newpost from '../components/newpost';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -95,10 +96,13 @@ export default function MiniDrawer(props) {
     const [open, setOpen] = React.useState(false);
     const [username, setUsername] = React.useState('');
     const [openbio, setOpenbio] = React.useState(false);
+    const [newpost, setNewpost] = React.useState(false);
     const [existb, setExistb] = React.useState('');
 
 
-
+    const addpost = () => {
+        setNewpost(!newpost);
+    }
     const addbio = () => {
         setOpenbio(!openbio);
     }
@@ -171,7 +175,7 @@ export default function MiniDrawer(props) {
                         <ListItemIcon> <BurstModeIcon /></ListItemIcon>
                         <ListItemText primary='Your Posts' />
                     </ListItem>
-                    <ListItem button key='New Post'>
+                    <ListItem button onClick={addpost} key='New Post'>
                         <ListItemIcon><PostAddIcon /> </ListItemIcon>
                         <ListItemText primary='New Post' />
                     </ListItem>
@@ -205,9 +209,10 @@ export default function MiniDrawer(props) {
                 </List>
             </Drawer>
             <div>
-                {openbio ? <Bio open={openbio} /> : <></>
-
-                }
+                {openbio ? <Bio open={openbio} /> : <></>}
+            </div>
+            <div>
+                {newpost ? <Newpost open={newpost} /> : <></>}
             </div>
         </div>
     );

@@ -15,27 +15,41 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function FormDialog(props) {
     const [open, setOpen] = React.useState(props.open);
-    const [bio, setBio] = React.useState('');
+    const [content, setContent] = React.useState('');
+    const [selectedfile, setSelectedfile] = React.useState(null);
 
-    const handlebio = (event) => {
-        console.log(event.target.value);
-        setBio(event.target.value);
-    }
 
-    const savebio = () => {
+    const savepost = () => {
         const user = JSON.parse(sessionStorage.getItem('userData'));
-        Axios.post(`http://localhost:5000/addbio`, { id: user.id, bio: bio })
+        Axios.post(`http://localhost:5000/addpost`, { id: user.id, content: selectedfile, description: content })
             .then(res => {
                 if (res.data.success === true) {
-                    swal('your Information added successfully', 'checkout your profile', 'success')
+                    swal('your Post is uploaded', 'check your posts', 'success')
                     setOpen(false);
                 }
             })
     }
-
+    const fileChangedHandler = event => {
+        getBase64(event.target.files[0], (result) => {
+            setSelectedfile(result);
+        });
+    }
+    const getBase64 = (file, cb) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            cb(reader.result)
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
     const handleClose = () => {
         setOpen(false);
     };
+    const handleChangehead = (event) => {
+        setContent(event.target.value)
+    }
 
     return (
         <div>
@@ -46,27 +60,21 @@ export default function FormDialog(props) {
                 TransitionComponent={Transition}
                 keepMounted
                 aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">About You</DialogTitle>
+                <DialogTitle id="form-dialog-title">New Post</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Describe yourself in 4-5 sentences
+                        Say your friends what you are up to
           </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Bio"
-                        type="text"
-                        onChange={handlebio}
-                        fullWidth
-                    >                    </TextField>
+
+                    <textarea name="questionhead" cols="50" rows="4" onChange={handleChangehead} placeholder="Enter your Feed"></textarea>
+                    <input type="file" onChange={fileChangedHandler} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
           </Button>
-                    <Button onClick={savebio} color="primary">
-                        Add Bio
+                    <Button onClick={savepost} color="primary">
+                        Add Post
           </Button>
                 </DialogActions>
             </Dialog>
