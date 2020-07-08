@@ -37,6 +37,7 @@ export default function Post(props) {
                 if (res.data.success === true) {
                     console.log('liked')
                     setLikecount(res.data.likecount)
+                    setOpendbutton(!opendbutton)
                 }
             })
     }
