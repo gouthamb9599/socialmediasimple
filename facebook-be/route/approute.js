@@ -265,5 +265,47 @@ const route = app => {
                 }
             })
     })
+    app.get('/getcomment', (req, res) => {
+        const id = req.query.id;
+        client.query(`select * from comment where post_id=$1 `, [id],
+            (err, results) => {
+                if (err) console.log(err);
+                else {
+                    if (results.rowCount !== 0) {
+                        res.send({ success: true, data: results.rows })
+                    }
+                }
+            })
+    })
+    app.post('/postcomment', (req, res) => {
+        const data = req.body;
+        client.query(`insert into comment(comment,post_id,user_id) values($1,$2,$3)`, [data.comment, data.post, data.user],
+            (err, results) => {
+                if (err) console.log(err)
+                else {
+                    if (results.rowCount !== 0) {
+                        client.query(`select count(*) from comment where post_id=$1`, [data.post],
+                            (errs, result) => {
+                                if (errs) console.log(errs)
+                                else {
+                                    console.log(result.rows)
+                                    if (result.rowCount !== 0) {
+                                        client.query(`update posts set comment_count=$1 where id=$2`, [result.rows[0].count, data.post],
+                                            (err1, result1) => {
+                                                if (err1) console.log(err1)
+                                                else {
+                                                    if (result1.rowCount !== 0) {
+                                                        res.send({ success: true })
+                                                    }
+                                                }
+                                            })
+                                    }
+                                }
+
+                            })
+                    }
+                }
+            })
+    })
 }
 module.exports = route;

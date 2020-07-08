@@ -127,7 +127,6 @@ export default function MiniDrawer(props) {
             .then(res => {
                 console.log(res.data);
                 if (res.data.success === true) {
-
                     setNewsdata(res.data.data);
                 }
             })
@@ -262,7 +261,7 @@ export default function MiniDrawer(props) {
                 </List>
             </Drawer>
             <div>
-                {openbio ? <Bio open={openbio} /> : <></>}
+                {openbio ? <Bio bio={existb} open={openbio} /> : <></>}
             </div>
             <div>
                 {newpost ? <Newpost open={newpost} /> : <></>}
@@ -276,7 +275,7 @@ export default function MiniDrawer(props) {
             <div>
                 {opennews ? <div style={{ marginTop: '100px', marginLeft: '250px' }}>
                     <div style={{ paddingBottom: '15px', fontSize: '20px' }}>News Feed</div>
-                    <div>{newsdata.map(data => (<Post content={data.content} description={data.description} reaction={data.reaction} comment={data.comment_count} />))}</div>
+                    <div>{newsdata.map(data => (<Post id={data.id} content={data.content} description={data.description} reaction={data.reaction} comment={data.comment_count} />))}</div>
                 </div> : <></>
 
                 }

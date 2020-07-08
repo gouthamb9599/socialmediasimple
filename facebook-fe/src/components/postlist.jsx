@@ -13,6 +13,6 @@ export default function Postlist(props) {
     }, []);
     return (<div style={{ marginTop: '100px', marginLeft: '250px' }}>
         <div style={{ paddingBottom: '15px', fontSize: '20px' }}>Your Posts</div>
-        <div>{data.map(data => (<Post content={data.content} description={data.description} reaction={data.reaction} comment={data.comment_count} />))}</div>
+        <div>{data.map(data => (<Post id={data.id} content={data.content} description={data.description} reaction={data.reaction} comment={data.comment_count} />))}</div>
     </div>)
 }
