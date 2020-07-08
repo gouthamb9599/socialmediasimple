@@ -37,6 +37,7 @@ export class Login extends Component {
         axios.post('http://localhost:5000/logingoogle', googleresponse)
             .then((result) => {
                 // let responseJson = result;
+                console.log(result);
                 sessionStorage.setItem("userData", JSON.stringify(result.data));
                 this.props.history.push('/home')
             });
