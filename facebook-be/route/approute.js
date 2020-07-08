@@ -92,5 +92,17 @@ const route = app => {
                 }
             })
     })
+    app.get('/getpost', (req, res) => {
+        const data = req.query.id;
+        client.query(`select * from posts where account_id=$1`, [data],
+            (err, results) => {
+                if (err) console.log(err);
+                else {
+                    if (results.rowCount !== 0) {
+                        res.send({ success: true, data: results.rows })
+                    }
+                }
+            })
+    })
 }
 module.exports = route;

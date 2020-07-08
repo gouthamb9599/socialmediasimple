@@ -20,12 +20,12 @@ import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import BurstModeIcon from '@material-ui/icons/BurstMode';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import GroupIcon from '@material-ui/icons/Group';
-import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Bio from '../components/bio';
 import Newpost from '../components/newpost';
+import Postlist from '../components/postlist';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -97,9 +97,12 @@ export default function MiniDrawer(props) {
     const [username, setUsername] = React.useState('');
     const [openbio, setOpenbio] = React.useState(false);
     const [newpost, setNewpost] = React.useState(false);
+    const [openpost, setOpenpost] = React.useState()
     const [existb, setExistb] = React.useState('');
 
-
+    const listpost = () => {
+        setOpenpost(!openpost);
+    }
     const addpost = () => {
         setNewpost(!newpost);
     }
@@ -171,7 +174,7 @@ export default function MiniDrawer(props) {
                         <ListItemIcon><DynamicFeedIcon /> </ListItemIcon>
                         <ListItemText primary='Post Feeds' />
                     </ListItem>
-                    <ListItem button key='Your Posts'>
+                    <ListItem button onClick={listpost} key='Your Posts'>
                         <ListItemIcon> <BurstModeIcon /></ListItemIcon>
                         <ListItemText primary='Your Posts' />
                     </ListItem>
@@ -190,10 +193,6 @@ export default function MiniDrawer(props) {
                     <ListItem button key='Followers'>
                         <ListItemIcon><GroupIcon /> </ListItemIcon>
                         <ListItemText primary='Followers' />
-                    </ListItem>
-                    <ListItem button key='Following'>
-                        <ListItemIcon><PeopleOutlineIcon /> </ListItemIcon>
-                        <ListItemText primary='Following' />
                     </ListItem>
                 </List>
                 <Divider />
@@ -214,6 +213,10 @@ export default function MiniDrawer(props) {
             <div>
                 {newpost ? <Newpost open={newpost} /> : <></>}
             </div>
+            <div>
+                {openpost ? <Postlist /> : <></>}
+            </div>
+
         </div>
     );
 }
