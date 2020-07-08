@@ -307,5 +307,37 @@ const route = app => {
                 }
             })
     })
+    app.post('/postlike', (req, res) => {
+        const data = req.body;
+        client.query(`insert into likes(post_id,user_id) values($1,$2)`, [data.post, data.user],
+            (err, results) => {
+                if (err) console.log(err)
+                else {
+                    if (results.rowCount !== 0) {
+                        client.query(`select count(*) from likes where post_id=$1`, [data.post],
+                            (errs, result) => {
+                                if (errs) console.log(errs)
+                                else {
+                                    console.log(result.rows)
+                                    if (result.rowCount !== 0) {
+                                        client.query(`update posts set reaction=$1 where id=$2`, [result.rows[0].count, data.post],
+                                            (err1, result1) => {
+                                                if (err1) console.log(err1)
+                                                else {
+                                                    if (result1.rowCount !== 0) {
+                                                        res.send({ success: true, likecount: result.rows[0].count })
+                                                    }
+                                                }
+                                            })
+                                    }
+                                }
+
+                            })
+                    }
+                }
+            })
+    })
+
+
 }
 module.exports = route;

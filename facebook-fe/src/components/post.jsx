@@ -16,6 +16,8 @@ export default function Post(props) {
     const [commentdata, setCommentdata] = React.useState([]);
     const [newcomment, setNewcomment] = React.useState('');
     const [opencomment, setOpencomment] = React.useState(false);
+    const [opendbutton, setOpendbutton] = React.useState(false);
+    const [likecount, setLikecount] = React.useState(0);
     const handleChangehead = (event) => {
         setNewcomment(event.target.value)
     }
@@ -27,6 +29,16 @@ export default function Post(props) {
                 }
             })
         setOpencomment(!opencomment)
+    }
+    const setlike = () => {
+        const data = JSON.parse(sessionStorage.getItem('userData'));
+        Axios.post(`http://localhost:5000/postlike`, { post: props.id, user: data.id })
+            .then(res => {
+                if (res.data.success === true) {
+                    console.log('liked')
+                    setLikecount(res.data.likecount)
+                }
+            })
     }
     const savecomment = () => {
         const data = JSON.parse(sessionStorage.getItem('userData'));
@@ -45,12 +57,15 @@ export default function Post(props) {
         <div style={{ border: '1px solid #3f51b5' }}>
             <div>{props.description}</div>
             <div>{(props.content !== null) ? <img src={props.content} alt="image" /> : <></>}</div>
-            <div><Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                startIcon={<ThumbUpAltIcon />}>
-                {props.reaction} Like</Button>
+            <div>{opendbutton ? <Button variant="contained" disabled>
+                {likecount} Like
+            </Button> : <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={setlike}
+                    startIcon={<ThumbUpAltIcon />}>
+                    {props.reaction} Like</Button>}
                 <Button
                     variant="contained"
                     color="primary"
