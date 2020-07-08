@@ -19,7 +19,7 @@ export class Login extends Component {
     check = (e) => {
         axios.post('http://localhost:5000/login', { email: this.state.email, password: this.state.password })
             .then((result) => {
-                sessionStorage.setItem("userData", JSON.stringify(result));
+                sessionStorage.setItem("userData", JSON.stringify(result.data));
                 this.props.history.push('/home')
             });
     }
@@ -37,7 +37,7 @@ export class Login extends Component {
         axios.post('http://localhost:5000/logingoogle', googleresponse)
             .then((result) => {
                 // let responseJson = result;
-                sessionStorage.setItem("userData", JSON.stringify(result));
+                sessionStorage.setItem("userData", JSON.stringify(result.data));
                 this.props.history.push('/home')
             });
     }
